@@ -24,7 +24,7 @@ public class OrderInput {
 
         String name = nameAndQuantity.get(NAME_IDX);
         String quantity = nameAndQuantity.get(QUANTITY_IDX);
-        int count = validateQuantityOnlyDigit(quantity);
+        int count = validateOnlyDigit(quantity);
         validateQuantityCount(count);
         return new OrderInput(name, count);
     }
@@ -35,7 +35,7 @@ public class OrderInput {
         }
     }
 
-    private static int validateQuantityOnlyDigit(String input) {
+    private static int validateOnlyDigit(String input) {
         if (!input.chars().allMatch(Character::isDigit)) {
             throw new OrderException();
         }

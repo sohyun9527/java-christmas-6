@@ -33,10 +33,6 @@ public class Discount {
         return result;
     }
 
-    public boolean isOverPromotionPrice() {
-        return menus.getTotalAmount() >= PROMOTION_PRICE;
-    }
-
     public int christmas() {
         int discountAmount = 0;
         if (eventDay.isBeforeChristmas()) {
@@ -73,6 +69,10 @@ public class Discount {
 
     public boolean isOverMinimumAmount() {
         return menus.getTotalAmount() >= MINIMUM_AMOUNT;
+    }
+
+    public boolean isOverPromotionPrice() {
+        return menus.getTotalAmount() >= PROMOTION_PRICE;
     }
 
     public int getTotalDiscount() {

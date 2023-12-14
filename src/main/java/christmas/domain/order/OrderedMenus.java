@@ -35,10 +35,10 @@ public class OrderedMenus {
     }
 
     private void validateIsOverCount(List<OrderedMenu> menus) {
-        int count = 0;
-        for (OrderedMenu menu : menus) {
-            count += menu.getQuantity();
-        }
+        int count = menus.stream()
+                .mapToInt(OrderedMenu::getQuantity)
+                .sum();
+        
         if (count > MAX_COUNT) {
             throw new OverCountException(MAX_COUNT);
         }

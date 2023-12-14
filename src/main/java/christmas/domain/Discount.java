@@ -39,7 +39,7 @@ public class Discount {
     public int christmas() {
         int discountAmount = 0;
         if (eventDay.isBeforeChristmas()) {
-            discountAmount += START_AMOUNT + (eventDay.getDay() - 1) * DAILY_DISCOUNT;
+            discountAmount = START_AMOUNT + (eventDay.getDay() - 1) * DAILY_DISCOUNT;
         }
         return discountAmount;
     }
@@ -48,7 +48,7 @@ public class Discount {
         int discountAmount = 0;
         if (!eventDay.isWeekEnd()) {
             int totalDessertCount = menus.getCategoryMenuCount(Category.DESSERT);
-            discountAmount += totalDessertCount * DISCOUNT_UNIT;
+            discountAmount = totalDessertCount * DISCOUNT_UNIT;
         }
         return discountAmount;
     }
@@ -57,7 +57,7 @@ public class Discount {
         int discountAmount = 0;
         if (eventDay.isWeekEnd()) {
             int totalDessertCount = menus.getCategoryMenuCount(Category.MAIN);
-            discountAmount += totalDessertCount * DISCOUNT_UNIT;
+            discountAmount = totalDessertCount * DISCOUNT_UNIT;
         }
         return discountAmount;
     }
@@ -65,12 +65,16 @@ public class Discount {
     public int special() {
         int discountAmount = 0;
         if (eventDay.isSpecial()) {
-            discountAmount += START_AMOUNT;
+            discountAmount = START_AMOUNT;
         }
         return discountAmount;
     }
 
     public boolean isOverMinimumAmount() {
         return menus.getTotalAmount() >= MINIMUM_AMOUNT;
+    }
+
+    public int getTotalDiscount() {
+        return christmas() + weekEnd() + weekDay() + special();
     }
 }

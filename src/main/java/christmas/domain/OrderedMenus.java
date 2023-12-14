@@ -16,8 +16,8 @@ public class OrderedMenus {
         this.menus = menus;
     }
 
-    public long getTotalAmount() {
-        long amount = 0;
+    public int getTotalAmount() {
+        int amount = 0;
         for (OrderedMenu menu : menus) {
             amount += menu.getAmount();
         }

@@ -35,15 +35,27 @@ public class OutputView {
     private String moneyFormatter(long price) {
         NumberFormat format = NumberFormat.getInstance(Locale.KOREA);
 
-        return format.format(price);
+        return format.format(price) + "원";
+    }
+
+    public void printTotalBenefitAmount(int price) {
+        System.out.println("\n<총혜택 금액>");
+        StringBuilder stringBuilder = new StringBuilder();
+        if (price != 0) {
+            stringBuilder.append("-");
+        }
+        stringBuilder.append(moneyFormatter(price));
+        System.out.println(stringBuilder);
     }
 
     public void printPromotionResult(MenuBoard menuBoard) {
         System.out.println("\n<증정 메뉴>");
-        System.out.print(menuBoard.getName());
+        StringBuilder sb = new StringBuilder();
+        sb.append(menuBoard.getName());
         if (menuBoard != MenuBoard.NONE) {
-            System.out.println(" 1개");
+            sb.append(" 1개");
         }
+        System.out.println(sb);
     }
 
     public void printDiscountDetail(String type, int amount) {
@@ -62,6 +74,11 @@ public class OutputView {
 
     public void printNone() {
         System.out.println("없음");
+    }
+
+    public void printAfterDiscountAmount(int price) {
+        System.out.println("\n<할인 후 예상 결제 금액>");
+        System.out.println(moneyFormatter(price));
     }
 }
 

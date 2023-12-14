@@ -75,7 +75,11 @@ public class Discount {
         return menus.getTotalAmount() >= PROMOTION_PRICE;
     }
 
+
     public int getTotalDiscount() {
-        return christmas() + weekEnd() + weekDay() + special();
+        if (isOverMinimumAmount()) {
+            return christmas() + weekEnd() + weekDay() + special();
+        }
+        return 0;
     }
 }

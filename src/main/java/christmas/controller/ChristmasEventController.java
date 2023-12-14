@@ -1,6 +1,7 @@
 package christmas.controller;
 
 import christmas.domain.Badge;
+import christmas.domain.Condition;
 import christmas.domain.Discount;
 import christmas.domain.DiscountType;
 import christmas.domain.EventDay;
@@ -28,11 +29,14 @@ public class ChristmasEventController {
         outputView.printStartMessage();
         EventDay eventDay = getVisitDay();
 
-        OrderedMenus orderedMenus = generateOrderedMenus();
-        Discount discount = new Discount(orderedMenus, eventDay);
-        showOrderResult(eventDay, orderedMenus, discount);
-        showDiscountResult(discount);
-        showBenefitAmount(discount, orderedMenus);
+        // 탈출 조건 -> 재시작하지 않는다 || 금액이 10,000원을 넘었다.
+        boolean condition = true;
+        while (condition) {
+            OrderedMenus orderedMenus = generateOrderedMenus();
+            Discount discount = new Discount(orderedMenus, eventDay);
+            showOrderResult(eventDay, orderedMenus, discount);
+            condition = showDiscountResult(discount, orderedMenus);
+        }
 
     }
 
@@ -70,17 +74,38 @@ public class ChristmasEventController {
         outputView.printBadgeResult(Badge.getByAmount(totalBenefitAmount));
     }
 
-    private void showDiscountResult(Discount discount) {
+    private boolean showDiscountResult(Discount discount, OrderedMenus menus) {
         outputView.printDiscountTitle();
         EnumMap<DiscountType, Integer> result = discount.getResult();
-        if (result.isEmpty()) {
-            outputView.printNone();
-            return;
+        boolean resultIsZero = result.values().stream().allMatch(value -> value == 0);
+        if (isAppliedBenefit(discount, resultIsZero)) {
+            return true;
         }
         for (DiscountType type : DiscountType.values()) {
             int discountAmount = result.getOrDefault(type, 0);
             if (discountAmount != 0) {
                 outputView.printDiscountDetail(type.getType(), discountAmount);
+            }
+        }
+        showBenefitAmount(discount, menus);
+        return false;
+    }
+
+    private boolean isAppliedBenefit(Discount discount, boolean resultIsZero) {
+        if (!discount.isOverMinimumAmount() || resultIsZero) {
+            outputView.printNone();
+            return reOrderQuestion();
+        }
+        return false;
+    }
+
+    private boolean reOrderQuestion() {
+        while (true) {
+            try {
+                Condition condition = Condition.from(inputView.readCondition());
+                return condition == Condition.RESTART;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
     }

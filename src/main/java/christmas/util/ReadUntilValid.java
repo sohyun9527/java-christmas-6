@@ -12,4 +12,15 @@ public class ReadUntilValid {
             }
         }
     }
+
+    public static <T> void readUntil(Runnable input) {
+        while (true) {
+            try {
+                input.run();
+                return;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 }

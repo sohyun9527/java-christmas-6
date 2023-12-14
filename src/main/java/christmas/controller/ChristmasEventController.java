@@ -8,6 +8,7 @@ import christmas.domain.OrderInput;
 import christmas.domain.OrderedMenu;
 import christmas.domain.OrderedMenus;
 import christmas.repository.MenuBoard;
+import christmas.util.ReadUntilValid;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 import java.util.ArrayList;
@@ -26,24 +27,37 @@ public class ChristmasEventController {
 
     public void run() {
         outputView.printStartMessage();
-        EventDay eventDay = EventDay.from(inputView.readVisitDay());
+        EventDay eventDay = getVisitDay();
         outputView.printPreviewMessage(eventDay.getDay());
-        String orderMenuNames = inputView.readOrder();
-        List<String> nameAndQuantity = List.of(orderMenuNames.split(",", -1));
-        List<OrderInput> orderInputs = new ArrayList<>();
-        for (String input : nameAndQuantity) {
-            orderInputs.add(OrderInput.from(input));
-        }
-        List<OrderedMenu> menus = new ArrayList<>();
-        for (OrderInput orderInput : orderInputs) {
-            menus.add(orderInput.generateOrderedMenu());
-        }
-        OrderedMenus orderedMenus = new OrderedMenus(menus);
+
+        OrderedMenus orderedMenus = generateOrderedMenus();
         Discount discount = new Discount(orderedMenus, eventDay);
         showOrderResult(orderedMenus, discount);
         showDiscountResult(discount);
         showBenefitAmount(discount, orderedMenus);
 
+    }
+
+    private OrderedMenus generateOrderedMenus() {
+        return ReadUntilValid.readUntilValid(() -> {
+            String orderMenuNames = inputView.readOrder();
+            List<String> nameAndQuantity = List.of(orderMenuNames.split(",", -1));
+            List<OrderInput> orderInputs = new ArrayList<>();
+            for (String input : nameAndQuantity) {
+                orderInputs.add(OrderInput.from(input));
+            }
+            List<OrderedMenu> menus = new ArrayList<>();
+            for (OrderInput orderInput : orderInputs) {
+                menus.add(orderInput.generateOrderedMenu());
+            }
+            return new OrderedMenus(menus);
+        });
+    }
+
+    private EventDay getVisitDay() {
+        return ReadUntilValid.readUntilValid(() ->
+                EventDay.from(inputView.readVisitDay())
+        );
     }
 
     private void showBenefitAmount(Discount discount, OrderedMenus orderedMenus) {

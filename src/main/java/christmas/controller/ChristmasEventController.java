@@ -2,9 +2,10 @@ package christmas.controller;
 
 import christmas.domain.Badge;
 import christmas.domain.Condition;
-import christmas.domain.Discount;
-import christmas.domain.DiscountType;
 import christmas.domain.EventDay;
+import christmas.domain.benefit.BenefitResult;
+import christmas.domain.benefit.Discount;
+import christmas.domain.benefit.DiscountType;
 import christmas.domain.order.OrderInput;
 import christmas.domain.order.OrderedMenu;
 import christmas.domain.order.OrderedMenus;
@@ -34,8 +35,9 @@ public class ChristmasEventController {
         while (condition) {
             OrderedMenus orderedMenus = generateOrderedMenus();
             Discount discount = new Discount(orderedMenus, eventDay);
+            BenefitResult benefitResult = new BenefitResult(discount.getResult());
             showOrderResult(eventDay, orderedMenus, discount);
-            condition = showDiscountResult(discount, orderedMenus);
+            condition = showDiscountResult(discount, benefitResult, orderedMenus);
         }
 
     }
@@ -64,8 +66,8 @@ public class ChristmasEventController {
         );
     }
 
-    private void showBenefitAmount(Discount discount, OrderedMenus orderedMenus) {
-        int totalBenefitAmount = discount.getResult().values().stream().mapToInt(i -> i).sum();
+    private void showBenefitAmount(Discount discount, BenefitResult benefitResult, OrderedMenus orderedMenus) {
+        int totalBenefitAmount = benefitResult.benefitAmount();
         int totalOrderAmount = orderedMenus.getTotalAmount();
         int totalDiscountAmount = discount.getTotalDiscount();
 
@@ -74,11 +76,11 @@ public class ChristmasEventController {
         outputView.printBadgeResult(Badge.getByAmount(totalBenefitAmount));
     }
 
-    private boolean showDiscountResult(Discount discount, OrderedMenus menus) {
+    private boolean showDiscountResult(Discount discount, BenefitResult benefitResult, OrderedMenus menus) {
         outputView.printDiscountTitle();
-        EnumMap<DiscountType, Integer> result = discount.getResult();
-        boolean resultIsZero = result.values().stream().allMatch(value -> value == 0);
-        if (isAppliedBenefit(discount, resultIsZero)) {
+        EnumMap<DiscountType, Integer> result = benefitResult.getBenefitResult();
+        // 만원 이상이야? 혜택 적용된게 하나라도 있어?
+        if (isAppliedBenefit(discount, benefitResult.isBenefitIsEmpty())) {
             return true;
         }
         for (DiscountType type : DiscountType.values()) {
@@ -87,7 +89,7 @@ public class ChristmasEventController {
                 outputView.printDiscountDetail(type.getType(), discountAmount);
             }
         }
-        showBenefitAmount(discount, menus);
+        showBenefitAmount(discount, benefitResult, menus);
         return false;
     }
 

@@ -1,5 +1,6 @@
-package christmas.domain;
+package christmas.domain.benefit;
 
+import christmas.domain.EventDay;
 import christmas.domain.order.OrderedMenus;
 import christmas.repository.Category;
 import christmas.repository.MenuBoard;

@@ -1,6 +1,7 @@
 package christmas.repository;
 
 public enum Category {
+    NONE("없음"),
     APPETIZER("에피타이저"),
     MAIN("메인"),
     DESSERT("디저트"),

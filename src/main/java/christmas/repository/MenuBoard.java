@@ -21,7 +21,9 @@ public enum MenuBoard {
     // 음료
     ZERO_COLA(Category.BEVERAGE, "제로콜라", 3_000),
     RED_WINE(Category.BEVERAGE, "레드와인", 60_000),
-    CHAMPAGNE(Category.BEVERAGE, "샴페인", 25_000);
+    CHAMPAGNE(Category.BEVERAGE, "샴페인", 25_000),
+    NONE(Category.NONE, "없음", 0);
+
 
     private final Category category;
     private final String name;

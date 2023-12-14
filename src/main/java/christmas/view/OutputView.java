@@ -1,7 +1,7 @@
 package christmas.view;
 
 import christmas.domain.Badge;
-import christmas.domain.OrderedMenu;
+import christmas.domain.order.OrderedMenu;
 import christmas.repository.MenuBoard;
 import java.text.NumberFormat;
 import java.util.List;

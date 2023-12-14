@@ -1,4 +1,4 @@
-package christmas.domain;
+package christmas.domain.order;
 
 import christmas.domain.exception.OnlyDrinkException;
 import christmas.domain.exception.OrderException;
@@ -7,7 +7,6 @@ import christmas.repository.Category;
 import java.util.List;
 
 public class OrderedMenus {
-    // 중복 검수, 총합이 20개 넘는지 검수
     private static final int MAX_COUNT = 20;
     private final List<OrderedMenu> menus;
 

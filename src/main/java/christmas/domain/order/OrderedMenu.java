@@ -1,4 +1,4 @@
-package christmas.domain;
+package christmas.domain.order;
 
 import christmas.repository.Category;
 import christmas.repository.MenuBoard;
@@ -8,8 +8,8 @@ public class OrderedMenu {
     private final MenuBoard menuBoard;
     private final int quantity;
 
-    public OrderedMenu(MenuBoard menuBoard, int quantity) {
-        this.menuBoard = menuBoard;
+    public OrderedMenu(MenuBoard menu, int quantity) {
+        this.menuBoard = menu;
         this.quantity = quantity;
     }
 
@@ -24,10 +24,6 @@ public class OrderedMenu {
 
     public Category getCategory() {
         return menuBoard.getCategory();
-    }
-
-    public int getPrice() {
-        return menuBoard.getPrice();
     }
 
     public MenuBoard getMenuBoard() {

@@ -1,6 +1,7 @@
 package christmas.domain;
 
 import christmas.domain.exception.OrderException;
+import christmas.repository.MenuBoard;
 import java.util.List;
 
 public class OrderInput {
@@ -18,14 +19,13 @@ public class OrderInput {
     }
 
     public static OrderInput from(String input) {
-        List<String> nameAndQuantity = List.of(input.split("-", -1));
+        List<String> nameAndQuantity = List.of(input.split(NAME_QUANTITY_DIVIDER, -1));
+        validateSize(nameAndQuantity);
+
         String name = nameAndQuantity.get(NAME_IDX);
         String quantity = nameAndQuantity.get(QUANTITY_IDX);
-
-        validateSize(nameAndQuantity);
         int count = validateQuantityOnlyDigit(quantity);
         validateQuantityCount(count);
-
         return new OrderInput(name, count);
     }
 
@@ -46,5 +46,13 @@ public class OrderInput {
         if (quantity < MINIMUM_COUNT) {
             throw new OrderException();
         }
+    }
+
+
+    // name을 갖고 MenuBoard 찾고, quantity와 함께 랩핑해야된다
+    public OrderedMenu generateOrderedMenu() {
+        MenuBoard menuBoard = MenuBoard.from(name); // 실제 있는 메뉴인지 검증
+
+        return new OrderedMenu(menuBoard, quantity);
     }
 }

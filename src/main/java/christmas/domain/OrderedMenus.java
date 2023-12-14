@@ -24,6 +24,13 @@ public class OrderedMenus {
         return amount;
     }
 
+    public int getCategoryMenuCount(Category category) {
+        return menus.stream()
+                .filter(menu -> menu.getCategory() == category)
+                .mapToInt(OrderedMenu::getQuantity)
+                .sum();
+    }
+
     private void validateOrderedMenus(List<OrderedMenu> menus) {
         validateDuplicate(menus);
         validateIsOnlyDrinks(menus);
@@ -53,5 +60,9 @@ public class OrderedMenus {
         if (menus.stream().distinct().count() != menus.size()) {
             throw new OrderException();
         }
+    }
+
+    public List<OrderedMenu> getMenus() {
+        return menus;
     }
 }

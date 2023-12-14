@@ -27,11 +27,10 @@ public class ChristmasEventController {
     public void run() {
         outputView.printStartMessage();
         EventDay eventDay = getVisitDay();
-        outputView.printPreviewMessage(eventDay.getDay());
 
         OrderedMenus orderedMenus = generateOrderedMenus();
         Discount discount = new Discount(orderedMenus, eventDay);
-        showOrderResult(orderedMenus, discount);
+        showOrderResult(eventDay, orderedMenus, discount);
         showDiscountResult(discount);
         showBenefitAmount(discount, orderedMenus);
 
@@ -86,10 +85,11 @@ public class ChristmasEventController {
         }
     }
 
-    private void showOrderResult(OrderedMenus orderedMenus, Discount discount) {
+    private void showOrderResult(EventDay eventDay, OrderedMenus orderedMenus, Discount discount) {
         long totalAmount = orderedMenus.getTotalAmount();
         MenuBoard menu = MenuBoard.NONE;
 
+        outputView.printPreviewMessage(eventDay.getDay());
         outputView.printOrderedMenus(orderedMenus.getMenus());
         outputView.printTotalAmount(totalAmount);
         if (discount.isOverPromotionPrice()) {

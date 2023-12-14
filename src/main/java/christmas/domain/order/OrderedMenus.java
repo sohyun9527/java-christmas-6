@@ -16,11 +16,9 @@ public class OrderedMenus {
     }
 
     public int getTotalAmount() {
-        int amount = 0;
-        for (OrderedMenu menu : menus) {
-            amount += menu.getAmount();
-        }
-        return amount;
+        return menus.stream()
+                .mapToInt(OrderedMenu::getAmount)
+                .sum();
     }
 
     public int getCategoryMenuCount(Category category) {

@@ -1,5 +1,6 @@
 package christmas.domain;
 
+import christmas.domain.order.OrderedMenus;
 import christmas.repository.Category;
 import christmas.repository.MenuBoard;
 import java.util.EnumMap;

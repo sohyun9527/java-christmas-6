@@ -15,7 +15,7 @@ public class OrderedMenu {
 
     // 주문된 메뉴 하나 가격
     public int getAmount() {
-        return getPrice() * quantity;
+        return menuBoard.getPrice() * quantity;
     }
 
     public String getName() {

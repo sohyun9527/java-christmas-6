@@ -11,7 +11,6 @@ import christmas.repository.MenuBoard;
 import christmas.util.ReadUntilValid;
 import christmas.view.InputView;
 import christmas.view.OutputView;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
@@ -42,16 +41,18 @@ public class ChristmasEventController {
         return ReadUntilValid.readUntilValid(() -> {
             String orderMenuNames = inputView.readOrder();
             List<String> nameAndQuantity = List.of(orderMenuNames.split(",", -1));
-            List<OrderInput> orderInputs = new ArrayList<>();
-            for (String input : nameAndQuantity) {
-                orderInputs.add(OrderInput.from(input));
-            }
-            List<OrderedMenu> menus = new ArrayList<>();
-            for (OrderInput orderInput : orderInputs) {
-                menus.add(orderInput.generateOrderedMenu());
-            }
+            List<OrderInput> orderInputs = getOrderInputs(nameAndQuantity);
+            List<OrderedMenu> menus = generateOrderedMenus(orderInputs);
             return new OrderedMenus(menus);
         });
+    }
+
+    private static List<OrderedMenu> generateOrderedMenus(List<OrderInput> orderInputs) {
+        return orderInputs.stream().map(OrderInput::generateOrderedMenu).toList();
+    }
+
+    private static List<OrderInput> getOrderInputs(List<String> nameAndQuantity) {
+        return nameAndQuantity.stream().map(OrderInput::from).toList();
     }
 
     private EventDay getVisitDay() {

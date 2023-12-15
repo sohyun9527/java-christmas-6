@@ -81,6 +81,15 @@ public class DiscountService {
         return christmas() + weekDay() + weekEnd() + special();
     }
 
+    public int getTotalBenefit() {
+        int result = getTotalDiscountAmount();
+        if (isAbleGetPromotion()) {
+            result += MenuBoard.CHAMPAGNE.getPrice();
+        }
+        return result;
+    }
+
+    // 할인 후 예상 결제 금액
     public int getAfterDiscountAmount() {
         return orderedMenus.getTotalAmount() - getTotalDiscountAmount();
     }

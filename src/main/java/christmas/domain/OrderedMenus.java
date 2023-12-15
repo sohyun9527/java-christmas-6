@@ -20,6 +20,11 @@ public class OrderedMenus {
         return menus.stream().mapToInt(OrderedMenu::getPrice).sum();
     }
 
+    public int getMenuCountByCategory(Category category) {
+        return menus.stream().filter(orderedMenu -> orderedMenu.getCategory() == category)
+                .mapToInt(OrderedMenu::getCount).sum();
+    }
+
     private static void validate(List<OrderedMenu> menus) {
         validateDuplicateMenu(menus);
         validateOnlyDrink(menus);

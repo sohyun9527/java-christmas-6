@@ -25,6 +25,10 @@ public class OrderedMenus {
                 .mapToInt(OrderedMenu::getCount).sum();
     }
 
+    public List<OrderedMenu> getMenus() {
+        return menus;
+    }
+
     private static void validate(List<OrderedMenu> menus) {
         validateDuplicateMenu(menus);
         validateOnlyDrink(menus);

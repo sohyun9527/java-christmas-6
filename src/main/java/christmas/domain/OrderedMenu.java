@@ -33,6 +33,10 @@ public class OrderedMenu {
         return count;
     }
 
+    public String getName() {
+        return menu.getName();
+    }
+
     public Category getCategory() {
         return menu.getCategory();
     }

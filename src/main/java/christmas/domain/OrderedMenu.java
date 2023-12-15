@@ -2,6 +2,7 @@ package christmas.domain;
 
 import christmas.domain.exception.OrderException;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderedMenu {
     private static final int MINIMUM_COUNT = 1;
@@ -26,6 +27,14 @@ public class OrderedMenu {
 
     public int getPrice() {
         return menu.getPrice() * count;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public Category getCategory() {
+        return menu.getCategory();
     }
 
     private static void validate(List<String> nameAndCount) {
@@ -56,5 +65,22 @@ public class OrderedMenu {
         if (nameAndCount.size() != VALID_SIZE) {
             throw new OrderException();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        OrderedMenu that = (OrderedMenu) o;
+        return Objects.equals(menu, that.menu);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(menu);
     }
 }

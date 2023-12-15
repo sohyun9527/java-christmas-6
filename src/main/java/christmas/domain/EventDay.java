@@ -33,7 +33,7 @@ public class EventDay {
     }
 
     public boolean isSpecial() {
-        return dayOfWeek == DayOfWeek.SATURDAY || day == CHRISTMAS;
+        return dayOfWeek == DayOfWeek.SUNDAY || day == CHRISTMAS;
     }
 
     private static DayOfWeek getDayOfWeek(int day) {
